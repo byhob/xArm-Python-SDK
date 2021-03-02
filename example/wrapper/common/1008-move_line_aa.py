@@ -7,7 +7,7 @@
 # Author: Vinman <vinman.wen@ufactory.cc> <vinman.cub@gmail.com>
 
 """
-Description: Move Arc line(linear arc motion)
+Description: Set the pose represented by the axis angle pose
 """
 
 import os
@@ -43,24 +43,25 @@ arm = XArmAPI(ip)
 arm.motion_enable(enable=True)
 arm.set_mode(0)
 arm.set_state(state=0)
+time.sleep(1)
+# go to "Zero Position"
+arm.move_gohome()
 
-arm.reset(wait=True)
+arm.set_position(300, 0, 300, 180, 0, 0)
+# test pitch, pitch +50
+ret = arm.set_position_aa(axis_angle_pose=[0, 0, 0, 0, 50, 0], relative=True, wait=True)
+print('set_position_aa, ret={}'.format(ret))
 
-paths = [
-    [300, 0, 150, -180, 0, 0],
-    [300, 200, 250, -180, 0, 0],
-    [500, 200, 150, -180, 0, 0],
-    [500, -200, 250, -180, 0, 0],
-    [300, -200, 150, -180, 0, 0],
-    [300, 0, 250, -180, 0, 0],
-    [300, 200, 350, -180, 0, 0],
-    [500, 200, 250, -180, 0, 0],
-    [500, -200, 350, -180, 0, 0],
-    [300, -200, 250, -180, 0, 0],
-    [300, 0, 350, -180, 0, 0],
-]
+# test pitch, pitch -50
+ret = arm.set_position_aa(axis_angle_pose=[0, 0, 0, 0, -50, 0], relative=True, wait=True)
+print('set_position_aa, ret={}'.format(ret))
 
-arm.move_arc_lines(paths, speed=300, times=10, wait=True)
+# test yaw, yaw +80
+ret = arm.set_position_aa(axis_angle_pose=[0, 0, 0, 0, 0, 80], relative=True, wait=True)
+print('set_position_aa, ret={}'.format(ret))
 
-arm.reset(wait=True)
-arm.disconnect()
+# test yaw, yaw -80
+ret = arm.set_position_aa(axis_angle_pose=[0, 0, 0, 0, 0, -80], relative=True, wait=True)
+print('set_position_aa, ret={}'.format(ret))
+
+

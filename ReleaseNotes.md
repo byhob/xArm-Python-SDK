@@ -2,6 +2,35 @@
 
 ## Update Summary
 
+- > ### 1.6.5
+
+  - Support for blocky code conversion and operation of xArmStudio1.6.5
+
+- > ### 1.6.0
+
+  - Support the xArm BIO gripper, Robotiq 2F-85 gripper and Robotiq 2F-140 gripper
+  - Support position detection trigger the controller analog IO
+  - Support self-collision model parameter setting
+  - Support Modbus communication of end tools
+  - Supports TCP timeout for setting instructions
+  - Support joint motion with circular interpolation
+  - Support for blocky code conversion and operation of xArmStudio1.6.0
+  - Optimize logic, enhance API security, Fix several bugs
+
+- > ### 1.5.0
+
+  - The new parameter of `set_servo_cartisian` interface is used to support servo cartisian movement of tool coordinate system
+  - Support delayed trigger digital IO
+  - Support position detection trigger digital IO
+  - Support configure the stop state to automatically reset IO signal
+  - Support motion commands based on axis angle
+  - Support to calculate the offset between two points
+  - Support for blocky code conversion and operation of xArmStudio1.5.0
+
+- > ### 1.4.0
+  - Support servo cartesian interface
+  - Support for blocky code conversion and operation of xArmStudio1.4.0
+
 - > ### 1.3.0
 
   - Added several attributes

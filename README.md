@@ -30,29 +30,29 @@ Install is not necessary, you can run examples without installation.Only Python3
 
 ## Update Summary
 
-- > ### 1.3.0
-  - Added several attributes
-  - Support tool coordinate system movement
-  - Support joint range limitation, collision rebound setting
-  - Support user coordinate system setting
-  - Support the status of the air pump
-  - Added counter interface
-  - Support for blocky code conversion and operation of xArmStudio1.3.0
+- > ### 1.6.5
 
-- > ### 1.2.2
+  - Support for blocky code conversion and operation of xArmStudio1.6.5
 
-  - Fix mechanical claw false positive error
-  - Modify the wait logic of a motion instruction
-  - Support for blocky code conversion and operation of xArmStudio1.2.2
+- > ### 1.6.0
 
-- > ### 1.2.0
+  - Support the xArm BIO gripper, Robotiq 2F-85 gripper and Robotiq 2F-140 gripper
+  - Support position detection trigger the controller analog IO
+  - Support self-collision model parameter setting
+  - Support Modbus communication of end tools
+  - Supports TCP timeout for setting instructions
+  - Support joint motion with circular interpolation
+  - Support for blocky code conversion and operation of xArmStudio1.6.0
+  - Optimize logic, enhance API security, Fix several bugs
 
-  - Fix the parameters of the control box GPIO analog signal
-  - Support for more Gcode commands
-  - Support trajectory recording
-  - Support for reduced mode settings
-  - Optimize some interfaces and bug fixes
-  - Support for blocky code conversion and operation of xArmStudio1.2.0
+- > ### 1.5.0
+  - The new parameter of `set_servo_cartisian` interface is used to support servo cartisian movement of tool coordinate system
+  - Support delayed trigger digital IO
+  - Support position detection trigger digital IO
+  - Support configure the stop state to automatically reset IO signal
+  - Support motion commands based on axis angle
+  - Support to calculate the offset between two points
+  - Support for blocky code conversion and operation of xArmStudio1.5.0
 
 - >### [More](ReleaseNotes.md)
 
@@ -85,6 +85,8 @@ __Note: Before running the example, please modify the ip value in the [robot.con
 
 - #####  [1007-counter](example/wrapper/common/1007-counter.py)
 
+- [__1008-move_line_aa__](example/wrapper/common/1008-move_line_aa.py)
+
 - ##### 2001-move_joint --> [xarm5](example/wrapper/xarm5/2001-move_joint.py) --- [xarm6](example/wrapper/xarm6/2001-move_joint.py) --- [xarm7](example/wrapper/xarm7/2001-move_joint.py)
 
 - ##### 2002-move_joint --> [xarm5](example/wrapper/xarm5/2002-move_joint.py) --- [xarm6](example/wrapper/xarm6/2002-move_joint.py) --- [xarm7](example/wrapper/xarm7/2002-move_joint.py)
@@ -93,11 +95,15 @@ __Note: Before running the example, please modify the ip value in the [robot.con
 
 - ##### 2004-move_joint --> [xarm5](example/wrapper/xarm5/2004-move_joint.py) --- [xarm6](example/wrapper/xarm6/2004-move_joint.py) --- [xarm7](example/wrapper/xarm7/2004-move_joint.py)
 
+- ##### 2005-move_arc_joint --> [xarm5](example/wrapper/xarm5/2005-move_arc_joint.py) --- [xarm6](example/wrapper/xarm6/2005-move_arc_joint.py) --- [xarm7](example/wrapper/xarm7/2005-move_arc_joint.py)
+
 - ##### [3001-move_circle](example/wrapper/common/3001-move_circle.py)
 
 - ##### [3002-record_trajectory](example/wrapper/common/3002-record_trajectory.py)
 
 - ##### [3003-playback_trajectory](example/wrapper/common/3003-playback_trajectory.py)
+
+- ##### [5000-set_tgpio_modbus](example/wrapper/common/5000-set_tgpio_modbus.py)
 
 - ##### [5001-get_tgpio_digital](example/wrapper/common/5001-get_tgpio_digital.py)
 
@@ -115,11 +121,21 @@ __Note: Before running the example, please modify the ip value in the [robot.con
 
 - ##### [5008-get_cgpio_state](example/wrapper/common/5008-get_cgpio_state.py)
 
+- ##### [5009-set_bio_gripper](example/wrapper/common/5009-set_bio_gripper.py)
+
 - ##### [6001-set_reduced_mode](example/wrapper/common/6001-set_reduced_mode.py)
 
 - ##### [6002-set_fense_mode](example/wrapper/common/6002-set_fense_mode.py)
 
+- ##### [7001-servo_j](example/wrapper/common/7001-servo_j.py)
+
+- ##### [7002-servo_cartesian](example/wrapper/common/7002-servo_cartesian.py)
+
+- [__7003-servo_cartesian_aa__](example/wrapper/common/7003-servo_cartesian_aa.py)
+
 - ##### [blockly_to_python](example/wrapper/tool/blockly_to_python.py)
+
+- ##### [get_report_data_with_protocol](example/wrapper/common/get_report_data_with_protocol.py)
 
 
 - #### Import
@@ -143,9 +159,12 @@ __Note: Before running the example, please modify the ip value in the [robot.con
   arm.set_position(...)
   arm.set_servo_angle(...)
   arm.set_servo_angle_j(...)
+  arm.set_servo_cartesian(...)
   arm.move_gohome(...)
   arm.move_circle(...)
   arm.emergency_stop()
+  arm.set_position_aa(...)
+  arm.set_servo_cartesian_aa(...)
   ```
 
 - #### Set
@@ -167,6 +186,8 @@ __Note: Before running the example, please modify the ip value in the [robot.con
   arm.get_err_warn_code()
   arm.get_position(...)
   arm.get_servo_angle(...)
+  arm.get_position_aa(...)
+  arm.get_pose_offset(...)
   ```
 
 - #### Setting
@@ -180,6 +201,11 @@ __Note: Before running the example, please modify the ip value in the [robot.con
   arm.set_collision_sensitivity(...)
   arm.set_teach_sensitivity(...)
   arm.set_gravity_direction(...)
+  arm.config_tgpio_reset_when_stop(...)
+  arm.config_cgpio_reset_when_stop(...)
+  arm.set_report_tau_or_i(...)
+  arm.set_self_collision_detection(...)
+  arm.set_collision_tool_model(...)
   arm.clean_conf()
   arm.save_conf()
   ```
@@ -195,12 +221,46 @@ __Note: Before running the example, please modify the ip value in the [robot.con
   arm.clean_gripper_error()
   ```
 
+- #### BIO Gripper
+
+  ```python
+  arm.set_bio_gripper_enable(...)
+  arm.set_bio_gripper_speed(...)
+  arm.open_bio_grippe(...)
+  arm.close_bio_gripper(...)
+  arm.get_bio_gripper_status()
+  arm.get_bio_gripper_error()
+  arm.clean_bio_gripper_error()
+  ```
+
+- #### RobotIQ Gripper
+
+  ```python
+  arm.robotiq_reset()
+  arm.robotiq_set_activate(...)
+  arm.robotiq_set_position(...)
+  arm.robotiq_open(...)
+  arm.robotiq_close(...)
+  arm.robotiq_get_status(...)
+  ```
+
+- #### Modbus of the end tools
+
+  ```python
+  arm.set_tgpio_modbus_timeout(...)
+  arm.set_tgpio_modbus_baudrate(...)
+  arm.get_tgpio_modbus_baudrate(...)
+  arm.getset_tgpio_modbus_data(...)
+  ```
+
 - #### GPIO
+
   ```python
   # Tool GPIO
   arm.get_tgpio_digital(...)
   arm.set_tgpio_digital(...)
   arm.get_tgpio_analog(...)
+  arm.set_tgpio_digital_with_xyz(...)
   # Controller GPIO
   arm.get_cgpio_digital(...)
   arm.get_cgpio_analog(...)
@@ -209,6 +269,8 @@ __Note: Before running the example, please modify the ip value in the [robot.con
   arm.set_cgpio_digital_input_function(...)
   arm.set_cgpio_digital_output_function(...)
   arm.get_cgpio_state()
+  arm.set_cgpio_digital_with_xyz(...)
+  arm.set_cgpio_analog_with_xyz(...)
   ```
 
 - #### Other
@@ -217,6 +279,8 @@ __Note: Before running the example, please modify the ip value in the [robot.con
   arm.shutdown_system(...)
   arm.clean_error()
   arm.clean_warn()
+  arm.set_counter_reset()
+  arm.set_counter_increase(...)
   ```
 
 - #### Register/Release
@@ -229,6 +293,8 @@ __Note: Before running the example, please modify the ip value in the [robot.con
   arm.register_mtable_mtbrake_changed_callback(callback)
   arm.register_error_warn_changed_callback(callback)
   arm.register_cmdnum_changed_callback(callback)
+  arm.register_temperature_changed_callback(callback)
+  arm.register_count_changed_callback(callback)
   arm.release_report_callback(callback)
   arm.release_report_location_callback(callback)
   arm.release_connect_changed_callback(callback)
@@ -237,6 +303,8 @@ __Note: Before running the example, please modify the ip value in the [robot.con
   arm.release_mtable_mtbrake_changed_callback(callback)
   arm.release_error_warn_changed_callback(callback)
   arm.release_cmdnum_changed_callback(callback)
+  arm.release_temperature_changed_callback(callback)
+  arm.release_count_changed_callback(callback)
   ```
 
 - #### Property
@@ -274,5 +342,11 @@ __Note: Before running the example, please modify the ip value in the [robot.con
   arm.device_type
   arm.axis
   arm.gravity_direction
+  arm.gpio_reset_config
+  arm.count
+  arm.temperatures
+  arm.voltages
+  arm.currents
+  arm.cgpio_states
   ```
 

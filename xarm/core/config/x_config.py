@@ -13,7 +13,7 @@ class XCONF(object):
     ARM_AXIS_NUM = 7
     GRIPPER_ID = 8
     TGPIO_ID = 9
-    MAX_CMD_NUM = 1000
+    MAX_CMD_NUM = 1024
 
     def __init__(self):
         pass
@@ -32,6 +32,7 @@ class XCONF(object):
             XARM5_X4 = 5
             XARM6_X4 = 6
             XARM7_X4 = 7
+            XARM6_X8 = 8
 
         JOINT_LIMITS = {
             Axis.XARM5: {
@@ -48,6 +49,14 @@ class XCONF(object):
                     (-2 * math.pi, 2 * math.pi),
                     (-2.059488, 2.094395),  # (-2.18, 2.18),
                     (-3.92699, 0.191986),  # (-4.01, 0.1),
+                    (-2 * math.pi, 2 * math.pi),
+                    (-1.692969, math.pi),  # (-1.75, math.pi),
+                    (-2 * math.pi, 2 * math.pi)
+                ],
+                Type.XARM6_X8: [
+                    (-2 * math.pi, 2 * math.pi),
+                    (-2.059488, 2.094395),  # (-2.18, 2.18),
+                    (-0.191986, 3.92699),
                     (-2 * math.pi, 2 * math.pi),
                     (-1.692969, math.pi),  # (-1.75, math.pi),
                     (-2 * math.pi, 2 * math.pi)
@@ -102,6 +111,14 @@ class XCONF(object):
                     (-math.pi, math.pi),
                     (-math.pi, math.pi)
                 ],
+                Type.XARM6_X8: [
+                    (-1000, 1000),
+                    (-1000, 1000),
+                    (-600, 1200),
+                    (-math.pi, math.pi),
+                    (-math.pi, math.pi),
+                    (-math.pi, math.pi)
+                ],
             },
             Axis.XARM7: {
                 Type.XARM7_X3: [
@@ -149,6 +166,8 @@ class XCONF(object):
         GET_ROBOT_SN = 2
         CHECK_VERIFY = 3
         RELOAD_DYNAMICS = 4
+        GET_REPORT_TAU_OR_I = 5
+
         SHUTDOWN_SYSTEM = 10
         MOTION_EN = 11
         SET_STATE = 12
@@ -163,11 +182,13 @@ class XCONF(object):
         MOVE_LINE = 21
         MOVE_LINEB = 22
         MOVE_JOINT = 23
+        MOVE_JOINTB = 24
         MOVE_HOME = 25
         SLEEP_INSTT = 26
         MOVE_CIRCLE = 27
         MOVE_LINE_TOOL = 28
         MOVE_SERVOJ = 29
+        MOVE_SERVO_CART = 30
 
         SET_TCP_JERK = 31
         SET_TCP_MAXACC = 32
@@ -210,11 +231,22 @@ class XCONF(object):
         PLAY_TRAJ = 64
         GET_TRAJ_RW_STATUS = 65
 
+        REPORT_TAU_OR_I = 70
         SET_TIMER = 71
         CANCEL_TIMER = 72
         SET_WORLD_OFFSET = 73
         CNTER_RESET = 74
         CNTER_PLUS = 75
+
+        CAL_POSE_OFFSET = 76
+
+        SET_SELF_COLLIS_CHECK = 77
+        SET_COLLIS_TOOL = 78
+        SET_SIMULATION_ROBOT = 79
+
+        GET_TCP_POSE_AA = 91
+        MOVE_LINE_AA = 92
+        MOVE_SERVO_CART_AA = 93
 
         SERVO_W16B = 101
         SERVO_R16B = 102
@@ -241,11 +273,18 @@ class XCONF(object):
         CGPIO_SET_OUT_FUN = 138
         CGPIO_GET_STATE = 139
 
+        GET_PWR_VERSION = 140
         GET_HD_TYPES = 141
+        DELAYED_CGPIO_SET = 142
+        DELAYED_TGPIO_SET = 143
+        POSITION_CGPIO_SET = 144
+        POSITION_TGPIO_SET = 145
+        SET_IO_STOP_RESET = 146
+        POSITION_CGPIO_SET_ANALOG = 147
 
     class UxbusConf:
-        SET_TIMEOUT = 1000  # ms
-        GET_TIMEOUT = 1000  # ms
+        SET_TIMEOUT = 2000  # ms
+        GET_TIMEOUT = 2000  # ms
 
     class ServoConf:
         CON_EN = 0x0100
@@ -312,6 +351,7 @@ class XCONF(object):
         ERR_PROT = 6  # TCP协议标志错误
         ERR_FUN = 7  # TCP回复指令和发送指令不匹配
         ERR_NOTTCP = 8  # 发送错误
+        STATE_NOT_READY = 9  # 未准备好运动
         ERR_OTHER = 11  # 其它错误
         ERR_PARAM = 12  # 参数错误
 
@@ -323,6 +363,27 @@ class XCONF(object):
         SAVING = 4
         SAVE_SUCCESS = 5
         SAVE_FAIL = 6
+
+    class BioGripperState:
+        IS_STOP = 0
+        IS_MOTION = 1
+        IS_DETECTED = 2
+        IS_FAULT = 3
+        IS_NOT_ENABLED = 0
+        IS_ENABLING = 1
+        IS_ENABLED = 2
+
+    class CollisionToolType:
+        NONE = 0
+        XARM_GRIPPER = 1
+        XARM_VACUUM_GRIPPER = 2
+        XARM_BIO_GRIPPER = 3
+        ROBOTIQ_2F85 = 4
+        ROBOTIQ_2F140 = 5
+
+        USE_PRIMITIVES = 20  # just for judgement, threshold.
+        CYLINDER = 21  # radius, height
+        BOX = 22  # x, y, z in tool coordinate direction
 
 
 

@@ -21,6 +21,7 @@ class APIState(object):
     EMERGENCY_STOP = -9  # 紧急停止
     SERVO_NOT_EXIST = -10  # 不存在此ID的关节
     CONVERT_FAILED = -11  # 转换Blockly失败
+    RUN_BLOCKLY_EXCEPTION = -12  # 运行blockly app异常
     NORMAL = 0  # 正常
     HAS_ERROR = XCONF.UxbusState.ERR_CODE  # 有尚未清除的错误
     HAS_WARN = XCONF.UxbusState.WAR_CODE  # 有尚未清除的警告
@@ -30,11 +31,23 @@ class APIState(object):
     CMD_PROT_ERROR = XCONF.UxbusState.ERR_PROT  # TCP协议标志错误
     FUN_ERROR = XCONF.UxbusState.ERR_FUN  # TCP回复指令和发送指令不匹配
     NO_TCP = XCONF.UxbusState.ERR_NOTTCP  # 写数据异常
+    STATE_NOT_READY = XCONF.UxbusState.STATE_NOT_READY  # 参数错误
     OTHER = XCONF.UxbusState.ERR_OTHER  # 其它错误
     PARAM_ERROR = XCONF.UxbusState.ERR_PARAM  # 参数错误
+
+    TGPIO_ID_ERR = 20  # 末端IO主机ID错误
+    MODBUS_BAUD_NOT_SUPPORT = 21  # modbus不支持此波特率
+    MODBUS_BAUD_NOT_CORRECT = 22  # 末端modbus波特率不正确
+    MODBUS_ERR_LENG = 23  # modbus回复数据长度错误
+
     TRAJ_RW_FAILED = 31  # 读写轨迹失败(加载轨迹或保存轨迹)
     TRAJ_RW_TOUT = 32  # 读写轨迹等待超时(加载轨迹或保存轨迹)
     TRAJ_PLAYBACK_TOUT = 33  # 回放轨迹超时(多种情况)
     SUCTION_CUP_TOUT = 41  # 等待吸泵设置超时
+
+    WAIT_FINISH_TIMEOUT = 100  # 等待操作完成超时
+    CHECK_FAILED = 101  # 等待操作完成过程检测状态连续失败次数过多
+    END_EFFECTOR_HAS_FAULT = 102  # 末端配件有错误
+    END_EFFECTOR_NOT_ENABLED = 103  # 末端配件未使能
 
 

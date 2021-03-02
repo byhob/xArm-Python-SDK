@@ -7,7 +7,7 @@
 # Author: Vinman <vinman.wen@ufactory.cc> <vinman.cub@gmail.com>
 
 """
-Description: Move Tool Line
+Description: Servo j
 """
 
 import os
@@ -46,18 +46,20 @@ arm.set_state(state=0)
 
 arm.reset(wait=True)
 
-arm.set_tool_position(x=100, y=0, z=0, roll=0, pitch=0, yaw=0, speed=100, wait=True)
-print(arm.get_position(), arm.get_position(is_radian=True))
-arm.set_tool_position(x=0, y=200, z=0, roll=0, pitch=0, yaw=0, speed=200, wait=True)
-print(arm.get_position(), arm.get_position(is_radian=True))
-arm.set_tool_position(x=200, y=0, z=0, roll=0, pitch=0, yaw=0, speed=300, wait=True)
-print(arm.get_position(), arm.get_position(is_radian=True))
-arm.set_tool_position(x=0, y=-400, z=0, roll=0, pitch=0, yaw=0, speed=400, wait=True)
-print(arm.get_position(), arm.get_position(is_radian=True))
-arm.set_tool_position(x=-200, y=0, z=0, roll=0, pitch=0, yaw=0, speed=500, wait=True)
-print(arm.get_position(), arm.get_position(is_radian=True))
-arm.set_tool_position(x=0, y=200, z=0, roll=0, pitch=0, yaw=0, speed=600, wait=True)
-print(arm.get_position(), arm.get_position(is_radian=True))
+arm.set_mode(1)
+arm.set_state(0)
+time.sleep(0.1)
 
-arm.reset(wait=True)
+while arm.connected and arm.state != 4:
+    for i in range(100):
+        angles = [i, 0, 0, 0, 0, 0, 0]
+        ret = arm.set_servo_angle_j(angles)
+        print('set_servo_angle_j, ret={}'.format(ret))
+        time.sleep(0.01)
+    for i in range(100):
+        angles = [100-i, 0, 0, 0, 0, 0, 0]
+        ret = arm.set_servo_angle_j(angles)
+        print('set_servo_angle_j, ret={}'.format(ret))
+        time.sleep(0.01)
+
 arm.disconnect()

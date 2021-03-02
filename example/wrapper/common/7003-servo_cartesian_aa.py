@@ -7,7 +7,7 @@
 # Author: Vinman <vinman.wen@ufactory.cc> <vinman.cub@gmail.com>
 
 """
-Description: Move Arc line(linear arc motion)
+Description: Set the pose represented by the axis angle pose
 """
 
 import os
@@ -43,24 +43,23 @@ arm = XArmAPI(ip)
 arm.motion_enable(enable=True)
 arm.set_mode(0)
 arm.set_state(state=0)
+time.sleep(1)
+# go to "Zero Position"
+arm.move_gohome()
+# go to start position
+print(arm.set_position(300, 0, 300, 180, 0, 0, wait=True))
+time.sleep(0.5)
 
-arm.reset(wait=True)
+# set to mode 1
+arm.set_mode(1)
+arm.set_state(state=0)
+time.sleep(1)
+# test move pitch continually, roll+90
+rp = 0.2
+for i in range(450):
+    time.sleep(0.005)
+    code = arm.set_servo_cartesian_aa([0, 0, 0, 0, rp, 0], relative=True, wait=False)
+    print('set_servo_cartesian_aa, code={}, i={}, rp={}'.format(code, i, rp))
 
-paths = [
-    [300, 0, 150, -180, 0, 0],
-    [300, 200, 250, -180, 0, 0],
-    [500, 200, 150, -180, 0, 0],
-    [500, -200, 250, -180, 0, 0],
-    [300, -200, 150, -180, 0, 0],
-    [300, 0, 250, -180, 0, 0],
-    [300, 200, 350, -180, 0, 0],
-    [500, 200, 250, -180, 0, 0],
-    [500, -200, 350, -180, 0, 0],
-    [300, -200, 250, -180, 0, 0],
-    [300, 0, 350, -180, 0, 0],
-]
 
-arm.move_arc_lines(paths, speed=300, times=10, wait=True)
 
-arm.reset(wait=True)
-arm.disconnect()

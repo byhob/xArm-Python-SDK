@@ -7,7 +7,7 @@
 # Author: Vinman <vinman.wen@ufactory.cc> <vinman.cub@gmail.com>
 
 """
-Description: Move Tool Line
+Description: Servo cartesian
 """
 
 import os
@@ -46,18 +46,24 @@ arm.set_state(state=0)
 
 arm.reset(wait=True)
 
-arm.set_tool_position(x=100, y=0, z=0, roll=0, pitch=0, yaw=0, speed=100, wait=True)
-print(arm.get_position(), arm.get_position(is_radian=True))
-arm.set_tool_position(x=0, y=200, z=0, roll=0, pitch=0, yaw=0, speed=200, wait=True)
-print(arm.get_position(), arm.get_position(is_radian=True))
-arm.set_tool_position(x=200, y=0, z=0, roll=0, pitch=0, yaw=0, speed=300, wait=True)
-print(arm.get_position(), arm.get_position(is_radian=True))
-arm.set_tool_position(x=0, y=-400, z=0, roll=0, pitch=0, yaw=0, speed=400, wait=True)
-print(arm.get_position(), arm.get_position(is_radian=True))
-arm.set_tool_position(x=-200, y=0, z=0, roll=0, pitch=0, yaw=0, speed=500, wait=True)
-print(arm.get_position(), arm.get_position(is_radian=True))
-arm.set_tool_position(x=0, y=200, z=0, roll=0, pitch=0, yaw=0, speed=600, wait=True)
-print(arm.get_position(), arm.get_position(is_radian=True))
+arm.set_position(*[200, 0, 200, 180, 0, 0], wait=True)
 
-arm.reset(wait=True)
+arm.set_mode(1)
+arm.set_state(0)
+time.sleep(0.1)
+
+while arm.connected and arm.state != 4:
+    for i in range(300):
+        x = 200 + i
+        mvpose = [x, 0, 200, 180, 0, 0]
+        ret = arm.set_servo_cartesian(mvpose, speed=100, mvacc=2000)
+        print('set_servo_cartesian, ret={}'.format(ret))
+        time.sleep(0.01)
+    for i in range(300):
+        x = 500 - i
+        mvpose = [x, 0, 200, 180, 0, 0]
+        ret = arm.set_servo_cartesian(mvpose, speed=100, mvacc=2000)
+        print('set_servo_cartesian, ret={}'.format(ret))
+        time.sleep(0.01)
+
 arm.disconnect()

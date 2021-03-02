@@ -7,12 +7,13 @@
 # Author: Vinman <vinman.wen@ufactory.cc> <vinman.cub@gmail.com>
 
 """
-Description: Move Tool Line
+Description: Move Arc Joint
 """
 
 import os
 import sys
 import time
+import math
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../..'))
 
@@ -46,18 +47,18 @@ arm.set_state(state=0)
 
 arm.reset(wait=True)
 
-arm.set_tool_position(x=100, y=0, z=0, roll=0, pitch=0, yaw=0, speed=100, wait=True)
-print(arm.get_position(), arm.get_position(is_radian=True))
-arm.set_tool_position(x=0, y=200, z=0, roll=0, pitch=0, yaw=0, speed=200, wait=True)
-print(arm.get_position(), arm.get_position(is_radian=True))
-arm.set_tool_position(x=200, y=0, z=0, roll=0, pitch=0, yaw=0, speed=300, wait=True)
-print(arm.get_position(), arm.get_position(is_radian=True))
-arm.set_tool_position(x=0, y=-400, z=0, roll=0, pitch=0, yaw=0, speed=400, wait=True)
-print(arm.get_position(), arm.get_position(is_radian=True))
-arm.set_tool_position(x=-200, y=0, z=0, roll=0, pitch=0, yaw=0, speed=500, wait=True)
-print(arm.get_position(), arm.get_position(is_radian=True))
-arm.set_tool_position(x=0, y=200, z=0, roll=0, pitch=0, yaw=0, speed=600, wait=True)
-print(arm.get_position(), arm.get_position(is_radian=True))
+speed = 50
+
+angles = [
+    [0, 14, -25, 13, 12.6, 0, 0],
+    [-14, 40, -73, 20, 33.4, -13.8, 0],
+    [21.9, 50, -80, 30, 36, 29, 0]
+]
+arm.set_pause_time(1)
+
+for _ in range(10):
+    for angle in angles:
+        code = arm.set_servo_angle(angle=angle, speed=speed, radius=20, wait=False)
 
 arm.reset(wait=True)
 arm.disconnect()
